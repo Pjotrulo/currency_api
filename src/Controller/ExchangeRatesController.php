@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\ExchangeRates;
+use App\Repository\ExchangeRatesRepository;
 use DateTime;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,11 +15,10 @@ use Symfony\Component\Routing\Annotation\Route;
 class ExchangeRatesController extends AbstractController
 {
     #[Route('/add/{currency}/{amount}', name: 'app_exchange_rates')]
-    public function add(ManagerRegistry $manager, string $currency, float $amount): JsonResponse
+    public function add(ExchangeRatesRepository $repository, string $currency, float $amount): JsonResponse
     {
         if($currency == 'GBP' || $currency == 'USD' || $currency == 'EUR') {
-            $entityManager = $manager->getManager();
-
+            
             $date = new DateTime('now');
 
             $exchangeRates = new ExchangeRates();
@@ -26,8 +26,7 @@ class ExchangeRatesController extends AbstractController
             $exchangeRates->setDate($date);
             $exchangeRates->setAmount(number_format($amount, 2, '.'));
 
-            $entityManager->persist($exchangeRates);
-            $entityManager->flush();
+            $repository->save($exchangeRates, true);
 
             return $this->json("Added data successfully!");
         } else {
