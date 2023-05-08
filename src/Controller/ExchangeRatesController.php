@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\ExchangeRates;
 use App\Repository\ExchangeRatesRepository;
 use DateTime;
-use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -41,7 +40,7 @@ class ExchangeRatesController extends AbstractController
 
             $properties = $repository->findByCurrencyAndDate($currency, $date);
 
-            return $this->json("Currency ".$properties[0]["currency"]." Date: ".$properties[0]["date"]." Amount ".$properties[0]["amount"]);
+            return $this->json($properties[0]);
         } else {
             return $this->json("Currency ".$currency." not supported!! Choose GBP, USD or EUR");
         }
