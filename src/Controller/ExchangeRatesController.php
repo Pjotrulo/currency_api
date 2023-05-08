@@ -51,4 +51,12 @@ class ExchangeRatesController extends AbstractController
             return $this->json("Currency ".$currency." not supported!! Choose GBP, USD or EUR");
         }
     }
+
+    #[Route('/getAllCurrency/{date}', name: 'app_exchange_rates_getAll')]
+    public function getAllCurrency(ExchangeRatesRepository $repository, string $date): JsonResponse
+    {
+        $properties = $repository->findByDate($date);
+
+        return $this->json($properties);
+    }
 }

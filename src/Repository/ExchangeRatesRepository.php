@@ -55,6 +55,21 @@ class ExchangeRatesRepository extends ServiceEntityRepository
 
     }
 
+    public function findByDate(string $date): array
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = '
+            SELECT currency, date, amount FROM exchange_rates
+            WHERE date = :date
+        ';
+
+        $statement = $conn->prepare($sql);
+        $resultSet = $statement->executeQuery(['date' => $date]);
+
+        return $resultSet->fetchAllAssociative();
+    }
+
 //    /**
 //     * @return ExchangeRates[] Returns an array of ExchangeRates objects
 //     */
