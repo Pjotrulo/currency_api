@@ -20,18 +20,18 @@ class ExchangeRatesController extends AbstractController
             
             $date = new DateTime('now');
 
-            $properties = $repository->findByCurrencyAndDate($currency, date_format($date, "Y-m-d"));
+            $data = $repository->findByCurrencyAndDate($currency, date_format($date, "Y-m-d"));
 
             $exchangeRates = new ExchangeRates();
             $exchangeRates->setCurrency($currency);
             $exchangeRates->setDate($date);
             $exchangeRates->setAmount(number_format($amount, 2, '.'));
 
-            if (!$properties) {
+            if (!$data) {
                 $repository->save($exchangeRates, true);
-                return $this->json("Added");
-            } else if ($properties) {
-                return $this->json("This currency is already exist.");
+                return $this->json("Added succesfully");
+            } else if ($data) {
+                return $this->json("Value already added.");
             }
 
         } else {
@@ -44,9 +44,14 @@ class ExchangeRatesController extends AbstractController
     {
         if($currency == 'GBP' || $currency == 'USD' || $currency == 'EUR') {
 
-            $properties = $repository->findByCurrencyAndDate($currency, $date);
+            $data = $repository->findByCurrencyAndDate($currency, $date);
 
-            return $this->json($properties[0]);
+            if(!$data) {
+                return $this->json("Wrong date.");
+            } else if($data) {
+                return $this->json($data[0]);
+            }
+
         } else {
             return $this->json("Currency ".$currency." not supported!! Choose GBP, USD or EUR");
         }
@@ -55,8 +60,12 @@ class ExchangeRatesController extends AbstractController
     #[Route('/getAllCurrency/{date}', name: 'app_exchange_rates_getAll')]
     public function getAllCurrency(ExchangeRatesRepository $repository, string $date): JsonResponse
     {
-        $properties = $repository->findByDate($date);
+        $data = $repository->findByDate($date);
 
-        return $this->json($properties);
+        if(!$data) {
+            return $this->json("Wrong date.");
+        } else if($data) {
+            return $this->json($data);
+        }
     }
 }
