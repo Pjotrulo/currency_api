@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ExchangeRatesController extends AbstractController
 {
-    #[Route('/currency/{currency}/{amount}', name: 'addd_currency', methods:"POST")]
+    #[Route('/currency/{currency}/{amount}', name: 'addd_currency', methods:'POST')]
     public function add(ExchangeRatesRepository $repository, string $currency, float $amount): JsonResponse
     {
         if($currency == 'GBP' || $currency == 'USD' || $currency == 'EUR') {
@@ -39,7 +39,7 @@ class ExchangeRatesController extends AbstractController
         }
     }
 
-    #[Route('/currency/{currency}/{date}', name: 'get_currency', methods:"GET")]
+    #[Route('/currency/{currency}/{date}', name: 'get_currency', methods:'GET')]
     public function getCurrency(ExchangeRatesRepository $repository, string $currency, string $date): JsonResponse
     {
         if($currency == 'GBP' || $currency == 'USD' || $currency == 'EUR') {
@@ -57,7 +57,7 @@ class ExchangeRatesController extends AbstractController
         }
     }
 
-    #[Route('/currency/{date}', name: 'get_all_currency')]
+    #[Route('/currency/{date}', name: 'get_all_currency', methods:'GET')]
     public function getAllCurrency(ExchangeRatesRepository $repository, string $date): JsonResponse
     {
         $data = $repository->findByDate($date);
