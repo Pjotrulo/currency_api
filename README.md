@@ -4,7 +4,7 @@
 
 - /api/auth
 - admin (username: admin, password: zaq1@WSX, role: admin)
-- user (username: user, password: user, role: readonly)
+- user (username: user, password: user, role: public)
 
 ### POST (add currency):
 
