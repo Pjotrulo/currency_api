@@ -22,7 +22,7 @@ class ExchangeRatesController extends AbstractController
         $api_key = $request->request->get('api_key');
 
         if($api_key == 'GdfbSHRkw90w4qC') {
-            if($currency === 'GBP' || $currency == 'USD' || $currency == 'EUR') {
+            if($currency == 'GBP' || $currency == 'USD' || $currency == 'EUR') {
 
                 $date = new DateTime('now');
     
@@ -37,21 +37,21 @@ class ExchangeRatesController extends AbstractController
                     $repository->save($exchangeRates, true);
 
                     return $this->json([
-                        'status' => 'Added succesfully'
+                        'status' => 'Exchange rate for '.$currency.' has been added to the database successfully.'
                     ], 200);
                 } else if ($data) {
                     return $this->json([
-                        'status' => 'Value already added'
+                        'status' => 'Value already in database. Exchange rates can only be added once a day.'
                     ], 302);
                 }
             } else {
                 return $this->json([
-                    'status' => 'Currency '.$currency.' not supported!! Choose GBP, USD or EUR'
-                ], 400);
+                    'status' => 'Wrong format or currency not supported. Choose GBP, USD or EUR.'
+                ], 404);
             }
         } else {
             return $this->json([
-                'status' => 'You are not authorized for this feature.'
+                'status' => 'You are not authorized to add data.'
             ], 403);
         } 
     }
@@ -66,20 +66,20 @@ class ExchangeRatesController extends AbstractController
     
                 if(!$data) {
                     return $this->json([
-                        'status' => 'Wrong date.'
-                    ], 400);
+                        'status' => 'Wrong date format or there is no data from this date.'
+                    ], 404);
                 } else if($data) {
                     return $this->json($data[0]);
                 }
     
             } else {
                 return $this->json([
-                    'status' => 'Currency '.$currency.' not supported!! Choose GBP, USD or EUR'
-                ], 400);
+                    'status' => 'Wrong format or currency not supported. Choose GBP, USD or EUR.'
+                ], 404);
             }
         } else {
             return $this->json([
-                'status' => 'You are not authorized for this feature.'
+                'status' => 'You are not authorized to read this data.'
             ], 403);
         }
     }
@@ -92,14 +92,14 @@ class ExchangeRatesController extends AbstractController
 
             if(!$data) {
                 return $this->json([
-                    'status' => 'Wrong date.'
-                ], 400);
+                    'status' => 'Wrong date format or there is no data from this date.'
+                ], 404);
             } else if($data) {
                 return $this->json($data);
             }
         } else {
             return $this->json([
-                'status' => 'You are not authorized for this feature.'
+                'status' => 'You are not authorized to read this data.'
             ], 403);
         }
     }
@@ -113,7 +113,7 @@ class ExchangeRatesController extends AbstractController
 
         if($username == 'admin' && $password == 'zaq1@WSX' && $role == 'admin') {
             return $this->json("Your api key: GdfbSHRkw90w4qC");
-        } else if($username == 'user' && $password == 'user' && $role == 'readonly') {
+        } else if($username == 'user' && $password == 'user' && $role == 'public') {
             return $this->json("Your api key: 8V0BR1zTHBMGFf4");
         }
     }
