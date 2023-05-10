@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ExchangeRatesController extends AbstractController
 {
-    #[Route('/currency', name: 'addd_currency', methods:'POST')]
+    #[Route('/currency', name: 'add_currency', methods:'POST')]
     public function add(ExchangeRatesRepository $repository, Request $request): JsonResponse
     {
         $currency = $request->request->get('currency');
@@ -35,6 +35,7 @@ class ExchangeRatesController extends AbstractController
     
                 if(!$data) {
                     $repository->save($exchangeRates, true);
+                    
                     return $this->json([
                         'status' => 'Added succesfully'
                     ], 200);
