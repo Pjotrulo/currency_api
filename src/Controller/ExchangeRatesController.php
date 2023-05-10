@@ -35,7 +35,7 @@ class ExchangeRatesController extends AbstractController
     
                 if(!$data) {
                     $repository->save($exchangeRates, true);
-                    
+
                     return $this->json([
                         'status' => 'Added succesfully'
                     ], 200);
@@ -59,7 +59,7 @@ class ExchangeRatesController extends AbstractController
     #[Route('/currency/{api_key}/{currency}/{date}', name: 'get_currency', methods:'GET')]
     public function getCurrency(ExchangeRatesRepository $repository, string $api_key, string $currency, string $date): JsonResponse
     {
-        if($api_key == '8V0BR1zTHBMGFf4') {
+        if($api_key == '8V0BR1zTHBMGFf4' || $api_key == 'GdfbSHRkw90w4qC') {
             if($currency == 'GBP' || $currency == 'USD' || $currency == 'EUR') {
 
                 $data = $repository->findByCurrencyAndDate($currency, $date);
@@ -87,7 +87,7 @@ class ExchangeRatesController extends AbstractController
     #[Route('/currency/{api_key}/{date}', name: 'get_all_currency', methods:'GET')]
     public function getAllCurrency(ExchangeRatesRepository $repository, string $api_key, string $date): JsonResponse
     {
-        if($api_key == '8V0BR1zTHBMGFf4') {
+        if($api_key == '8V0BR1zTHBMGFf4' || $api_key == 'GdfbSHRkw90w4qC') {
             $data = $repository->findByDate($date);
 
             if(!$data) {
